@@ -1,21 +1,16 @@
 from abc import ABC, abstractmethod
 
 class AbstractTagFactory(ABC):
-
     @abstractmethod
-    def create_pair_tag (self):
-        pass
-
-    @abstractmethod
-    def create_unpair_tag(self):
+    def create_tag(self):
         pass
 
 class ConcreteTagFactory(AbstractTagFactory):
-    def create_pair_tag(self, name):
-        return PairTag(name)
-
-    def create_unpair_tag(self, name):
-        return NotPairTag(name)
+    def create_tag(self, name, paired):
+        if paired:
+            return PairTag(name)
+        else:
+            return NotPairTag(name)
 
 class AbstractTag(ABC):
     def __init__(self, name) -> None:
@@ -43,10 +38,7 @@ to_create = [('div', True), ('input', False), ('table', True), ('img', False), (
 factory = ConcreteTagFactory()
 
 for el in to_create:
-    if el[1]:
-        tag = factory.create_pair_tag(el[0])
-    else:
-        tag = factory.create_unpair_tag(el[0])
+    tag = factory.create_tag(el[0], el[1])
 
     print(tag.show_tag())
     print(type(tag))
