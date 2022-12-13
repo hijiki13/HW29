@@ -1,12 +1,5 @@
 # Через абстрактную фабрику релизовать создание объектов тегов html.
 # Парные теги реализуются через фабрику PairTagFactory, непарные через NotPairTagFactory
-
-
-# Где должно быть условие для создавания элемента класса PairTagFactory или NotPairTagFactory? 
-# Оно вообще должно быть? Пользователь должен создавать только один объект factory, а тип фабрики выбирается по передаваемым переменным? (True -> Paired; False -> UnPaired)
-# __init__ должен быть в моей абстрактной фабрике??? И в ней же условие??
-# Или как я выполнила? При создании ты явно указываешь какой тег надо. (Если через примеры с фигурами, это как Rectangle(), Circle(), но у меня парные и не парные теги)
-# Как Клиент вообще может взаимодействовать с абстрактными классами, если они ничего не делают?! Или имеется в виду неявное взаимодействие через потомков?
 #------------------------
 from abc import ABC, abstractmethod
 
@@ -56,15 +49,15 @@ class NotPairTag(AbstractTag):
         return f'<{self._name}>'
 
 to_create = [('div', True), ('input', False), ('table', True), ('img', False), ('br', False), ('ul', True)]
+pair_factory = PairTagFactory()
+unpair_factory = NotPairTagFactory()
 
 # factory
 for el in to_create:
     if el[1]:
-        fab = PairTagFactory()
-        tag = fab.create_tag(el[0])
+        tag = pair_factory.create_tag(el[0])
     else:
-        fab = NotPairTagFactory()
-        tag = fab.create_tag(el[0])
+        tag = unpair_factory.create_tag(el[0])
 
     print(tag)
     print(type(tag))
